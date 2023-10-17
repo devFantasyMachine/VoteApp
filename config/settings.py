@@ -30,7 +30,8 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.now.sh', 'vote-app-pearl.vercel.app',
-                 '*.vercel.app', 'vercel.app', 'ep-patient-fog-73762715-pooler.us-east-1.postgres.vercel-storage.com' ]
+                 '*.vercel.app', 'vercel.app',
+                 'ep-patient-fog-73762715-pooler.us-east-1.postgres.vercel-storage.com' ]
 
 
 # Application definition
