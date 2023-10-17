@@ -21,6 +21,7 @@ MemberPositionStatus = [
 
 class VotingSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
+    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     label = models.CharField(max_length=255, blank=False, null=False, unique=True)
     description = models.TextField(null=True, blank=True)
     creator = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
@@ -33,6 +34,7 @@ class VotingSession(models.Model):
 
 
 class UserVotingSessionSubscription(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     session = models.ForeignKey(VotingSession, null=False, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
 
@@ -47,6 +49,7 @@ class UserVotingSessionSubscription(models.Model):
 
 
 class MemberPosition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     session = models.ForeignKey(VotingSession, null=False, on_delete=models.CASCADE)
     label = models.CharField(max_length=255, blank=False, null=False)
     description = models.TextField(null=True, blank=True)
@@ -58,6 +61,7 @@ class MemberPosition(models.Model):
 
 
 class MemberCandidate(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     position = models.ForeignKey(MemberPosition, null=False, on_delete=models.CASCADE)
     session = models.ForeignKey(VotingSession, null=False, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
@@ -69,6 +73,8 @@ class MemberCandidate(models.Model):
 
 
 class Vote(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
+    position = models.ForeignKey(MemberPosition, null=False, on_delete=models.CASCADE)
     candidate = models.ForeignKey(MemberCandidate, null=False, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     value = models.SmallIntegerField(null=False, default=1)

@@ -23,7 +23,7 @@ class User(AbstractUser):
 
     user_agent = models.CharField(max_length=255)
 
-    REQUIRED_FIELDS = ["username", "ip", "user_agent", "mat", "device_id"]
+    REQUIRED_FIELDS = ["ip", "user_agent", "mat", "device_id"]
 
     def __str__(self):
         return "{} {}".format(self.username, self.ip)

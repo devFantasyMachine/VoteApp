@@ -3,7 +3,7 @@ from django.core.validators import EmailValidator
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from voting_sessions.models import VotingSession, MemberPosition, UserVotingSessionSubscription, MemberCandidate
+from voting_sessions.models import VotingSession, MemberPosition, UserVotingSessionSubscription, MemberCandidate, Vote
 
 
 class VotingSessionSerializer(serializers.ModelSerializer):
@@ -59,6 +59,17 @@ class MemberCandidateSerializer(serializers.ModelSerializer):
         model = MemberCandidate
         fields = '__all__'
         read_only_fields = ['posted_at', 'position', 'user']
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    """
+        Serializer class to serialize User model.
+    """
+
+    class Meta:
+        model = Vote
+        fields = '__all__'
+        read_only_fields = ['posted_at', 'position', 'candidate', 'user']
 
 
 
