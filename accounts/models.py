@@ -12,6 +12,14 @@ from accounts.managers import UserManager
 import random
 
 
+def create_new_ref_number():
+    not_unique = True
+    while not_unique:
+        unique_ref = random.randint(10_000, 99_999)
+        if not User.objects.filter(device_id=unique_ref):
+            not_unique = False
+    return str(unique_ref)
+
 
 class User(AbstractUser):
 
@@ -33,13 +41,4 @@ class User(AbstractUser):
     def __str__(self):
         return "{} {}".format(self.username, self.ip)
 
-    # @classmethod
-    @staticmethod
-    def create_new_ref_number():
-        not_unique = True
-        while not_unique:
-            unique_ref = random.randint(10_000, 99_999)
-            if not User.objects.filter(Referrence_Number=unique_ref):
-                not_unique = False
-        return str(unique_ref)
 
