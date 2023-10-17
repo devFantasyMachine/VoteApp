@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 from .serializers import UserSerializer, UpdateUserSerializer, UserRegistrationSerializer, UserLoginSerializer
+from ipware import get_client_ip
 
 
 class UserList(generics.ListAPIView):
@@ -27,20 +28,36 @@ class UserRegistrationAPIView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
     def post(self, request,  *args, **kwargs):
-        email = request.data["mat"]
 
-        user = User.objects.filter(email=email)
-        if user is not None and len(user) > 0:
-            return HttpResponse(status=status.HTTP_403_FORBIDDEN, content="user already exists")
+        client_ip, is_routable = get_client_ip(request)
 
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        token = RefreshToken.for_user(user)
-        data = serializer.data
-        data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
-        data["is_new_user"] = True
-        return Response(data, status=status.HTTP_201_CREATED)
+        data = {
+            "username": request.data["pseudo"],
+            "mat": request.data["mat"],
+            "ip": client_ip,
+            "user_agent": request.data["user_agent"],
+            "device_id": request.data["device_id"]
+        }
+
+        serializer = self.get_serializer(data=data)
+
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+
+            token = RefreshToken.for_user(user)
+            data = serializer.data
+
+            user.password = str(token)
+            user.save()
+            
+            data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
+            data["is_new_user"] = True
+            return Response(data, status=status.HTTP_201_CREATED)
+
+        return HttpResponse(status=status.HTTP_403_FORBIDDEN, content="user already exists")
+
+
+
 
 
 

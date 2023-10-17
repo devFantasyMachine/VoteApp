@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class UserManager(BaseUserManager):
@@ -9,27 +10,20 @@ class UserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
-    def create_user(self, phone, password, **extra_fields):
-        """
-        :param phone: user's phone
-        :param password:
-        :param extra_fields: other's fields
-        :return: user
-        :rtype: User
-        """
+    def create_user(self, username,  ip, mat, device_id, user_agent, **extra_fields):
 
-        if not phone:
-            raise ValueError(_("Users must have an email address"))
+        if not username or not user_agent or not mat:
+            raise ValueError(_("Users must have "))
 
-        if password is None:
-            password = self.make_random_password()
-
-        user = self.model(phone=phone, **extra_fields)
-
-        user.username = phone
-        user.set_password(password)
+        user = self.model(username=username, mat=mat, ip=ip, user_agent=user_agent, **extra_fields)
         user.save()
+
+        token = RefreshToken.for_user(user)
+        user.password = str(token)
+        user.save()
+
         return user
+
 
     def create_user_by_email(self, email, password, **extra_fields):
         """
