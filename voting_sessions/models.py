@@ -21,7 +21,6 @@ MemberPositionStatus = [
 
 class VotingSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
-    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     label = models.CharField(max_length=255, blank=False, null=False, unique=True)
     description = models.TextField(null=True, blank=True)
     creator = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
@@ -66,6 +65,7 @@ class MemberCandidate(models.Model):
     session = models.ForeignKey(VotingSession, null=False, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     reason = models.TextField(null=False, blank=False)
+    image = models.TextField(null=True, blank=True)
     posted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

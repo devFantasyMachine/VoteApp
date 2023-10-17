@@ -115,7 +115,7 @@ class MemberPositionListApiView(ListAPIView, CreateAPIView):
         except Exception:
             return Response({'msg': "something was wrong"}, status=status.HTTP_403_FORBIDDEN)
 
-        if session.user.id != request.user.id:
+        if session.creator.id != request.user.id:
             return Response({'msg': "something was wrong"}, status=status.HTTP_403_FORBIDDEN)
 
         data = {**request.data, "session": session}

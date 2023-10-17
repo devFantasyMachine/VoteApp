@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
-from .serializers import UserSerializer, UpdateUserSerializer, UserRegistrationSerializer
+from .serializers import UserSerializer, UpdateUserSerializer, UserRegistrationSerializer, UserLoginSerializer
 
 
 class UserList(generics.ListAPIView):
@@ -50,7 +50,7 @@ class UserLoginAPIView(GenericAPIView):
     """
 
     permission_classes = (AllowAny,)
-    serializer_class = UserLoginByEmailSerializer
+    serializer_class = UserLoginSerializer
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -62,9 +62,6 @@ class UserLoginAPIView(GenericAPIView):
 
         data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
         data["is_new_user"] = False
-
-        notification = Notification.objects.create(user=user, message="welcome")
-        notification.save()
 
         return Response(data, status=status.HTTP_200_OK)
 
