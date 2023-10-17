@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from voting_sessions.models import VotingSession, Vote, MemberPosition, MemberCandidate, UserVotingSessionSubscription
+
+admin.site.register(VotingSession)
+admin.site.register(MemberPosition)
+admin.site.register(MemberCandidate)
+admin.site.register(UserVotingSessionSubscription)
+admin.site.register(Vote)
