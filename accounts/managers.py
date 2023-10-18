@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
-    def create_user(self, username,  ip, mat, device_id, user_agent, **extra_fields):
+    def create_user(self, username,  ip, mat, user_agent, **extra_fields):
 
         if not username or not user_agent or not mat:
             raise ValueError(_("Users must have "))

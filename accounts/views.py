@@ -36,7 +36,6 @@ class UserRegistrationAPIView(generics.CreateAPIView):
             "mat": request.data["mat"],
             "ip": client_ip,
             "user_agent": request.data["user_agent"],
-            "device_id": request.data["device_id"]
         }
 
         serializer = self.get_serializer(data=data)

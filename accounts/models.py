@@ -29,14 +29,13 @@ class User(AbstractUser):
 
     ip = models.CharField(max_length=50)
 
-    username = models.CharField(max_length=6, unique=True)
     mat = models.CharField(max_length=6, unique=True)
     name = models.CharField(max_length=6, unique=True, null=True, blank=True)
 
     device_id = models.CharField(max_length=40, unique=True, default=create_new_ref_number)
     user_agent = models.CharField(max_length=255)
 
-    REQUIRED_FIELDS = ["ip", "user_agent", "mat", "device_id"]
+    REQUIRED_FIELDS = ["ip", "user_agent", "mat"]
 
     def __str__(self):
         return "{} {}".format(self.username, self.ip)
