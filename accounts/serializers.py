@@ -34,7 +34,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id",  "username",  "ip", "mat", "device_id", "user_agent", "password")
-        extra_kwargs = {"password": {"write_only": True}}
+        extra_kwargs = {"password": {"read_only": True}, "device_id": {"read_only": True}}
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)

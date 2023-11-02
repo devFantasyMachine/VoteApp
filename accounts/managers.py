@@ -18,8 +18,7 @@ class UserManager(BaseUserManager):
         user = self.model(username=username, mat=mat, ip=ip, user_agent=user_agent, **extra_fields)
         user.save()
 
-        token = RefreshToken.for_user(user)
-        user.password = str(token)
+        user.password = user.device_id
         user.save()
 
         return user

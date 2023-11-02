@@ -32,7 +32,7 @@ class UserRegistrationAPIView(generics.CreateAPIView):
         client_ip, is_routable = get_client_ip(request)
 
         data = {
-            "username": request.data["pseudo"],
+            "username": request.data["username"],
             "mat": request.data["mat"],
             "ip": client_ip,
             "user_agent": request.data["user_agent"],
@@ -45,9 +45,6 @@ class UserRegistrationAPIView(generics.CreateAPIView):
 
             token = RefreshToken.for_user(user)
             data = serializer.data
-
-            user.password = str(token)
-            user.save()
             
             data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
             data["is_new_user"] = True
